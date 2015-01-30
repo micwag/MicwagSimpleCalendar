@@ -25,17 +25,15 @@ final class MicwagSimpleCalendarAdmin {
 			'edit_pages', 'micwag-simple-calendar-dashboard.php', array( $this, 'page_dashboard' ),
 			'dashicons-calendar', 50 );
 
-		add_submenu_page( 'micwag-simple-calendar-dashboard.php', __( 'Dates', 'micwag-simple-calendar' ),
-			__( 'Dates', 'micwag-simple-calendar' ), 'edit_pages', 'micwag-simple-calendar-dates.php',
-			array( $this, 'page_dates' ) );
-
 		add_submenu_page( 'micwag-simple-calendar-dashboard.php', __( 'Categories', 'micwag-simple-calendar' ),
 			__( 'Categories', 'micwag-simple-calendar' ), 'edit_pages', 'micwag-simple-calendar-categories.php',
 			array( $this, 'page_categories' ) );
-		add_submenu_page( 'micwag-simple-calendar-dashboard.php', __( 'Edit Date', 'micwag-simple-calendar' ),
+
+		add_submenu_page( null, __( 'Edit Date', 'micwag-simple-calendar' ),
 			__( 'Edit Date', 'micwag-simple-calendar' ), 'edit_pages', 'micwag-simple-calendar-date-edit.php',
 			array( $this, 'page_edit_date' ) );
-		add_submenu_page( 'micwag-simple-calendar-dashboard.php', __( 'Edit Category', 'micwag-simple-calendar' ),
+
+		add_submenu_page( null, __( 'Edit Category', 'micwag-simple-calendar' ),
 			__( 'Edit Category', 'micwag-simple-calendar' ), 'edit_pages', 'micwag-simple-calendar-category-edit.php',
 			array( $this, 'page_edit_category' ) );
 	}
@@ -332,10 +330,6 @@ final class MicwagSimpleCalendarAdmin {
 		} else {
 			die( "No permission" );
 		}
-	}
-
-	public function page_dates() {
-
 	}
 
 	public function page_edit_date() {
