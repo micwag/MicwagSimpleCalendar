@@ -1,9 +1,9 @@
 # Micwag Simple Calendar 
-Contributors: micwag
-Tags: calendar, widget, free, post, news, developer, posts, simple
-Stable tag: 4.1
-License: The MIT License
-License URI: http://opensource.org/licenses/MIT
+- Contributors: micwag
+- Tags: calendar, widget, free, post, news, developer, posts, simple
+- Stable tag: 4.1
+- License: The MIT License
+- License URI: http://opensource.org/licenses/MIT
 
 The plugin adds calendar functionality to wordpress. It contains a widget, which allows custom markup.
 
