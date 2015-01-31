@@ -121,13 +121,35 @@ class MicwagSimpleCalendarWidgetList extends WP_Widget {
 			$appointmentEndMinute       = isset( $appointmentEnd ) ? $appointmentEnd->minute : '';
 			$appointmentEndSecond       = isset( $appointmentEnd ) ? $appointmentEnd->second : '';
 
+			$beginningString = $appointmentBeginning->format( get_option( 'date_format' ) . ' H:i' );
+			$beginningString = str_replace( 'January', __( 'January' ), $beginningString );
+			$beginningString = str_replace( 'February', __( 'February' ), $beginningString );
+			$beginningString = str_replace( 'March', __( 'March' ), $beginningString );
+			$beginningString = str_replace( 'April', __( 'April' ), $beginningString );
+			$beginningString = str_replace( 'June', __( 'June' ), $beginningString );
+			$beginningString = str_replace( 'July', __( 'July' ), $beginningString );
+			$beginningString = str_replace( 'August', __( 'August' ), $beginningString );
+			$beginningString = str_replace( 'October', __( 'October' ), $beginningString );
+			$beginningString = str_replace( 'November', __( 'November' ), $beginningString );
+			$beginningString = str_replace( 'December', __( 'December' ), $beginningString );
+
+			$endString = $appointmentBeginning->format( get_option( 'date_format' ) . ' H:i' );
+			$endString = str_replace( 'January', __( 'January' ), $endString );
+			$endString = str_replace( 'February', __( 'February' ), $endString );
+			$endString = str_replace( 'March', __( 'March' ), $endString );
+			$endString = str_replace( 'April', __( 'April' ), $endString );
+			$endString = str_replace( 'June', __( 'June' ), $endString );
+			$endString = str_replace( 'July', __( 'July' ), $endString );
+			$endString = str_replace( 'August', __( 'August' ), $endString );
+			$endString = str_replace( 'October', __( 'October' ), $endString );
+			$endString = str_replace( 'November', __( 'November' ), $endString );
+			$endString = str_replace( 'December', __( 'December' ), $endString );
+
 			$appointmentContent = $appointmentMarkup;
 			$appointmentContent = str_replace( '%appointment_title%', $appointmentTitle, $appointmentContent );
 			$appointmentContent = str_replace( '%appointment_id%', $appointmentId, $appointmentContent );
-			$appointmentContent = str_replace( '%appointment_beginning%',
-				$appointmentBeginning->format( get_option( 'date_format' ) . ' H:i' ), $appointmentContent );
-			$appointmentContent = str_replace( '%appointment_end%',
-				$appointmentEnd->format( get_option( 'date_format' ) . ' H:i' ), $appointmentContent );
+			$appointmentContent = str_replace( '%appointment_beginning%', $beginningString, $appointmentContent );
+			$appointmentContent = str_replace( '%appointment_end%', $endString, $appointmentContent );
 			$appointmentContent = str_replace( '%appointment_description%', $appointmentDescription, $appointmentContent );
 			$appointmentContent = str_replace( '%appointment_location%', $appointmentLocation, $appointmentContent );
 			$appointmentContent = str_replace( '%appointment_beginning_html%', $appointmentBeginningHtml, $appointmentContent );
