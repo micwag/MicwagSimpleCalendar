@@ -1,7 +1,5 @@
 <?php
 
-require_once '../vendor/carbon.php';
-
 use Carbon\Carbon;
 
 class MicwagSimpleCalendarWidgetList extends WP_Widget {
@@ -100,9 +98,9 @@ class MicwagSimpleCalendarWidgetList extends WP_Widget {
 			$appointmentDescription     = isset( $appointment['description'] ) ? $appointment['description'] : '';
 			$appointmentLocation        = isset( $appointment['location'] ) ? $appointment['location'] : '';
 			$appointmentBeginning       = isset( $appointment['beginning'] ) ?
-				Carbon::parse( $appointment['beginning'], 'Y-m-d H:i:s' ) : null;
+				Carbon::createFromFormat('Y-m-d H:i:s', $appointment['beginning'], 'Europe/Berlin' ) : null;
 			$appointmentEnd             = isset( $appointment['end'] ) ?
-				Carbon::parse( $appointment['end'], 'Y-m-d H:i:s' ) : null;
+				Carbon::createFromFormat('Y-m-d H:i:s', $appointment['end'], 'Europe/Berlin' ) : null;
 			$appointmentBeginningHtml   = isset( $appointmentBeginning ) ? $appointmentBeginning->toW3cString() : '';
 			$appointmentEndHtml         = isset( $appointmentEnd ) ? $appointmentEnd->toW3cString() : '';
 			$appointmentBeginningYear   = isset( $appointmentBeginning ) ? $appointmentBeginning->year : '';

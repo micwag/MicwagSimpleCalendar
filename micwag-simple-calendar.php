@@ -14,6 +14,7 @@
  * The dates are stored in the wordpress database.
  */
 
+require_once 'vendor/carbon.php';
 require_once 'lib/MicwagSimpleCalendar.php';
 require_once 'lib/MicwagSimpleCalendarAdmin.php';
 require_once 'lib/MicwagSimpleCalendarWidgetList.php';
