@@ -92,15 +92,20 @@ class MicwagSimpleCalendarWidgetList extends WP_Widget {
 			$appointmentMarkup = '<article><h1><a href="%appointment_permalink%">%appointment_title%</a></h1></article>';
 		}
 
+		$timezone = get_option( 'timezone_string' );
+		if ( $timezone == '' ) {
+			$timezone = 'Europe/Berlin';
+		}
+
 		foreach ( $appointments as $appointment ) {
 			$appointmentTitle           = isset( $appointment['title'] ) ? $appointment['title'] : '';
 			$appointmentId              = isset( $appointment['id'] ) ? $appointment['id'] : 0;
 			$appointmentDescription     = isset( $appointment['description'] ) ? $appointment['description'] : '';
 			$appointmentLocation        = isset( $appointment['location'] ) ? $appointment['location'] : '';
 			$appointmentBeginning       = isset( $appointment['beginning'] ) ?
-				Carbon::createFromFormat('Y-m-d H:i:s', $appointment['beginning'], 'Europe/Berlin' ) : null;
+				Carbon::createFromFormat( 'Y-m-d H:i:s', $appointment['beginning'], $timezone ) : null;
 			$appointmentEnd             = isset( $appointment['end'] ) ?
-				Carbon::createFromFormat('Y-m-d H:i:s', $appointment['end'], 'Europe/Berlin' ) : null;
+				Carbon::createFromFormat( 'Y-m-d H:i:s', $appointment['end'], $timezone ) : null;
 			$appointmentBeginningHtml   = isset( $appointmentBeginning ) ? $appointmentBeginning->toW3cString() : '';
 			$appointmentEndHtml         = isset( $appointmentEnd ) ? $appointmentEnd->toW3cString() : '';
 			$appointmentBeginningYear   = isset( $appointmentBeginning ) ? $appointmentBeginning->year : '';
@@ -119,8 +124,10 @@ class MicwagSimpleCalendarWidgetList extends WP_Widget {
 			$appointmentContent = $appointmentMarkup;
 			$appointmentContent = str_replace( '%appointment_title%', $appointmentTitle, $appointmentContent );
 			$appointmentContent = str_replace( '%appointment_id%', $appointmentId, $appointmentContent );
-			$appointmentContent = str_replace( '%appointment_beginning%', $appointmentBeginning, $appointmentContent );
-			$appointmentContent = str_replace( '%appointment_end%', $appointmentEnd, $appointmentContent );
+			$appointmentContent = str_replace( '%appointment_beginning%',
+				$appointmentBeginning->format( get_option( 'date_format' ) . ' H:i' ), $appointmentContent );
+			$appointmentContent = str_replace( '%appointment_end%',
+				$appointmentEnd->format( get_option( 'date_format' ) . ' H:i' ), $appointmentContent );
 			$appointmentContent = str_replace( '%appointment_description%', $appointmentDescription, $appointmentContent );
 			$appointmentContent = str_replace( '%appointment_location%', $appointmentLocation, $appointmentContent );
 			$appointmentContent = str_replace( '%appointment_beginning_html%', $appointmentBeginningHtml, $appointmentContent );
