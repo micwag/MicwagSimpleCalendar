@@ -1,5 +1,9 @@
 <?php
 
+require_once '../vendor/carbon.php';
+
+use Carbon\Carbon;
+
 class MicwagSimpleCalendarWidgetList extends WP_Widget {
 	protected $calendar;
 	protected $months;
@@ -42,12 +46,14 @@ class MicwagSimpleCalendarWidgetList extends WP_Widget {
 
 		echo $args['before_title'] . $title . $args['after_title'];
 
-		if ( ! $category ) {
+		if ( ! isset( $category ) ) {
 			$category = 0;
 		}
 
 		$dates       = $this->calendar->get_future_dates( "beginning ASC", 5 );
 		$dates_final = array();
+
+		// Keep only dates from the selected category
 		if ( $category != 0 ) {
 			foreach ( $dates as $date ) {
 				if ( $date['category'] == $category ) {
@@ -76,11 +82,11 @@ class MicwagSimpleCalendarWidgetList extends WP_Widget {
 	 * Returns the markup for the appointments
 	 *
 	 * @param array $instance
-	 * @param       $dates
+	 * @param       $appointments
 	 *
 	 * @return string
 	 */
-	public function generate_html( $instance, $dates ) {
+	public function generate_html( $instance, $appointments ) {
 		$appointmentsContent = "";
 		if ( isset( $instance['appointmentContent'] ) ) {
 			$appointmentMarkup = $instance['appointmentContent'];
@@ -88,14 +94,63 @@ class MicwagSimpleCalendarWidgetList extends WP_Widget {
 			$appointmentMarkup = '<article><h1><a href="%appointment_permalink%">%appointment_title%</a></h1></article>';
 		}
 
-		foreach ( $dates as $date ) {
+		foreach ( $appointments as $appointment ) {
+			$appointmentTitle           = isset( $appointment['title'] ) ? $appointment['title'] : '';
+			$appointmentId              = isset( $appointment['id'] ) ? $appointment['id'] : 0;
+			$appointmentDescription     = isset( $appointment['description'] ) ? $appointment['description'] : '';
+			$appointmentLocation        = isset( $appointment['location'] ) ? $appointment['location'] : '';
+			$appointmentBeginning       = isset( $appointment['beginning'] ) ?
+				Carbon::parse( $appointment['beginning'], 'Y-m-d H:i:s' ) : null;
+			$appointmentEnd             = isset( $appointment['end'] ) ?
+				Carbon::parse( $appointment['end'], 'Y-m-d H:i:s' ) : null;
+			$appointmentBeginningHtml   = isset( $appointmentBeginning ) ? $appointmentBeginning->toW3cString() : '';
+			$appointmentEndHtml         = isset( $appointmentEnd ) ? $appointmentEnd->toW3cString() : '';
+			$appointmentBeginningYear   = isset( $appointmentBeginning ) ? $appointmentBeginning->year : '';
+			$appointmentBeginningMonth  = isset( $appointmentBeginning ) ? $appointmentBeginning->month : '';
+			$appointmentBeginningDay    = isset( $appointmentBeginning ) ? $appointmentBeginning->day : '';
+			$appointmentBeginningHour   = isset( $appointmentBeginning ) ? $appointmentBeginning->hour : '';
+			$appointmentBeginningMinute = isset( $appointmentBeginning ) ? $appointmentBeginning->minute : '';
+			$appointmentBeginningSecond = isset( $appointmentBeginning ) ? $appointmentBeginning->second : '';
+			$appointmentEndYear         = isset( $appointmentEnd ) ? $appointmentEnd->year : '';
+			$appointmentEndMonth        = isset( $appointmentEnd ) ? $appointmentEnd->month : '';
+			$appointmentEndDay          = isset( $appointmentEnd ) ? $appointmentEnd->day : '';
+			$appointmentEndHour         = isset( $appointmentEnd ) ? $appointmentEnd->hour : '';
+			$appointmentEndMinute       = isset( $appointmentEnd ) ? $appointmentEnd->minute : '';
+			$appointmentEndSecond       = isset( $appointmentEnd ) ? $appointmentEnd->second : '';
+
 			$appointmentContent = $appointmentMarkup;
-			$appointmentContent = str_replace( '%appointment_title%', $date['title'], $appointmentContent );
-			$appointmentContent = str_replace( '%appointment_id%', $date['id'], $appointmentContent );
-			$appointmentContent = str_replace( '%appointment_beginning%', $date['beginning'], $appointmentContent );
-			$appointmentContent = str_replace( '%appointment_end%', $date['end'], $appointmentContent );
-			$appointmentContent = str_replace( '%appointment_description%', $date['description'], $appointmentContent );
-			$appointmentContent = str_replace( '%appointment_location%', $date['location'], $appointmentContent );
+			$appointmentContent = str_replace( '%appointment_title%', $appointmentTitle, $appointmentContent );
+			$appointmentContent = str_replace( '%appointment_id%', $appointmentId, $appointmentContent );
+			$appointmentContent = str_replace( '%appointment_beginning%', $appointmentBeginning, $appointmentContent );
+			$appointmentContent = str_replace( '%appointment_end%', $appointmentEnd, $appointmentContent );
+			$appointmentContent = str_replace( '%appointment_description%', $appointmentDescription, $appointmentContent );
+			$appointmentContent = str_replace( '%appointment_location%', $appointmentLocation, $appointmentContent );
+			$appointmentContent = str_replace( '%appointment_beginning_html%', $appointmentBeginningHtml, $appointmentContent );
+			$appointmentContent = str_replace( '%appointment_end_html%', $appointmentEndHtml, $appointmentContent );
+			$appointmentContent = str_replace( '%appointment_beginning_year%', $appointmentBeginningYear,
+				$appointmentContent );
+			$appointmentContent = str_replace( '%appointment_beginning_month%', $appointmentBeginningMonth,
+				$appointmentContent );
+			$appointmentContent = str_replace( '%appointment_beginning_day%', $appointmentBeginningDay,
+				$appointmentContent );
+			$appointmentContent = str_replace( '%appointment_beginning_hour%', $appointmentBeginningHour,
+				$appointmentContent );
+			$appointmentContent = str_replace( '%appointment_beginning_minute%', $appointmentBeginningMinute,
+				$appointmentContent );
+			$appointmentContent = str_replace( '%appointment_beginning_second%', $appointmentBeginningSecond,
+				$appointmentContent );
+			$appointmentContent = str_replace( '%appointment_end_year%', $appointmentEndYear,
+				$appointmentContent );
+			$appointmentContent = str_replace( '%appointment_end_month%', $appointmentEndMonth,
+				$appointmentContent );
+			$appointmentContent = str_replace( '%appointment_end_day%', $appointmentEndDay,
+				$appointmentContent );
+			$appointmentContent = str_replace( '%appointment_end_hour%', $appointmentEndHour,
+				$appointmentContent );
+			$appointmentContent = str_replace( '%appointment_end_minute%', $appointmentEndMinute,
+				$appointmentContent );
+			$appointmentContent = str_replace( '%appointment_end_second%', $appointmentEndSecond,
+				$appointmentContent );
 
 			$appointmentsContent .= $appointmentContent;
 		}
