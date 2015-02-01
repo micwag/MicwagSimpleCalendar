@@ -94,14 +94,14 @@ final class MicwagSimpleCalendarAdmin {
 			$this->page_header( __( 'Calendar-Overview', 'micwag-simple-calendar' ) );
 
 			echo "<h3>";
-			echo __( 'Current dates', 'micwag-simple-calendar' );
+			echo __( 'Upcoming appointments', 'micwag-simple-calendar' );
 			echo "<a href=\"admin.php?page=micwag-simple-calendar-date-edit.php&action=add\" class=\"add-new-h2\">"
 			     . __( 'Add', 'micwag-simple-calendar' ) . "</a>";
 			echo "</h3>";
 
-			$dates = $this->calendar->get_all_dates();
+			$appointments = $this->calendar->get_upcoming_appointments();
 
-			if ( count( $dates ) === 0 ) {
+			if ( count( $appointments ) === 0 ) {
 				echo "<p>";
 				echo __( 'No dates found.', 'micwag-simple-calendar' );
 				echo "</p>";
@@ -134,34 +134,34 @@ final class MicwagSimpleCalendarAdmin {
 						</tr>
 					</thead>";
 				echo "<tbody>";
-				foreach ( $dates as $date ) {
+				foreach ( $appointments as $appointment ) {
 					echo "<tr>";
 
 					echo "<td>";
-					echo $date['id'];
+					echo $appointment['id'];
 					echo "</td>";
 
 					echo "<td><strong>";
-					echo $date['title'];
+					echo $appointment['title'];
 					echo "</strong></td>";
 
 					echo "<td>";
-					echo $date['beginning'];
+					echo $appointment['beginning'];
 					echo "</td>";
 
 					echo "<td>";
-					echo $date['end'];
+					echo $appointment['end'];
 					echo "</td>";
 
 					echo "<td>";
-					if ( $date['full_day'] ) {
+					if ( $appointment['full_day'] ) {
 						echo __( 'Yes', 'micwag-simple-calendar' );
 					} else {
 						echo __( 'No', 'micwag-simple-calendar' );
 					}
 					echo "</td>";
 
-					$category = $this->calendar->get_category( $date['category'] );
+					$category = $this->calendar->get_category( $appointment['category'] );
 					echo "<td style=\"color: #";
 					if ( $category['id'] != strval( 0 ) ) {
 						echo $category['color'];
@@ -177,9 +177,11 @@ final class MicwagSimpleCalendarAdmin {
 					echo "</td>";
 
 					echo "<td>";
-					echo "<a href=\"admin.php?page=micwag-simple-calendar-date-edit.php&action=edit&id=" . $date['id']
+					echo "<a href=\"admin.php?page=micwag-simple-calendar-date-edit.php&action=edit&id="
+					     . $appointment['id']
 					     . "\" title=\"\"><span class=\"dashicons dashicons-edit\"></span></a>";
-					echo "<a href=\"admin.php?page=micwag-simple-calendar-date-edit.php&action=delete&id=" . $date['id']
+					echo "<a href=\"admin.php?page=micwag-simple-calendar-date-edit.php&action=delete&id="
+					     . $appointment['id']
 					     . "\" title=\"\"><span class=\"dashicons dashicons-trash\"></span></a>";
 					echo "</td>";
 
@@ -187,9 +189,106 @@ final class MicwagSimpleCalendarAdmin {
 				}
 				echo "</tbody>";
 				echo "</table>";
-			}
 
-			$this->page_footer();
+
+				echo "<h3>";
+				echo __( 'Elapsed appointments', 'micwag-simple-calendar' );
+				echo "</h3>";
+
+				$appointments = $this->calendar->get_elapsed_appointments();
+
+				if ( count( $appointments ) === 0 ) {
+					echo "<p>";
+					echo __( 'No dates found.', 'micwag-simple-calendar' );
+					echo "</p>";
+				} else {
+					echo "<table class=\"widefat\">";
+					echo "
+					<thead>
+						<tr>
+							<th>
+								" . __( 'Id', 'micwag-simple-calendar' ) . "
+							</th>
+                            <th>
+                                " . __( 'Title', 'micwag-simple-calendar' ) . "
+                            </th>
+							<th>
+								" . __( 'Beginning', 'micwag-simple-calendar' ) . "
+							</th>
+							<th>
+								" . __( 'End', 'micwag-simple-calendar' ) . "
+							</th>
+                            <th>
+                                 " . __( 'Full Day', 'micwag-simple-calendar' ) . "
+                            </th>
+                            <th>
+                                 " . __( 'Category', 'micwag-simple-calendar' ) . "
+                            </th>
+							<th>
+								" . __( 'Actions', 'micwag-simple-calendar' ) . "
+							</th>
+						</tr>
+					</thead>";
+					echo "<tbody>";
+					foreach ( $appointments as $appointment ) {
+						echo "<tr>";
+
+						echo "<td>";
+						echo $appointment['id'];
+						echo "</td>";
+
+						echo "<td><strong>";
+						echo $appointment['title'];
+						echo "</strong></td>";
+
+						echo "<td>";
+						echo $appointment['beginning'];
+						echo "</td>";
+
+						echo "<td>";
+						echo $appointment['end'];
+						echo "</td>";
+
+						echo "<td>";
+						if ( $appointment['full_day'] ) {
+							echo __( 'Yes', 'micwag-simple-calendar' );
+						} else {
+							echo __( 'No', 'micwag-simple-calendar' );
+						}
+						echo "</td>";
+
+						$category = $this->calendar->get_category( $appointment['category'] );
+						echo "<td style=\"color: #";
+						if ( $category['id'] != strval( 0 ) ) {
+							echo $category['color'];
+						} else {
+							echo "000000";
+						}
+						echo "\">";
+						if ( $category['id'] != strval( 0 ) ) {
+							echo $category['name'];
+						} else {
+							echo __( "None", 'micwag-simple-calendar' );
+						}
+						echo "</td>";
+
+						echo "<td>";
+						echo "<a href=\"admin.php?page=micwag-simple-calendar-date-edit.php&action=edit&id="
+						     . $appointment['id']
+						     . "\" title=\"\"><span class=\"dashicons dashicons-edit\"></span></a>";
+						echo "<a href=\"admin.php?page=micwag-simple-calendar-date-edit.php&action=delete&id="
+						     . $appointment['id']
+						     . "\" title=\"\"><span class=\"dashicons dashicons-trash\"></span></a>";
+						echo "</td>";
+
+						echo "</tr>";
+					}
+					echo "</tbody>";
+					echo "</table>";
+				}
+
+				$this->page_footer();
+			}
 		} else {
 			echo __( 'Permission denied', 'micwag-simple-calendar' );
 		}
@@ -211,7 +310,6 @@ final class MicwagSimpleCalendarAdmin {
 		echo "<th>" . __( 'Id', 'micwag-simple-calendar' ) . "</th>";
 		echo "<th>" . __( 'Name', 'micwag-simple-calendar' ) . "</th>";
 		echo "<th>" . __( 'Color', 'micwag-simple-calendar' ) . "</th>";
-		echo "<th>" . __( 'Icon', 'micwag-simple-calendar' ) . "</th>";
 		echo "<th>" . __( 'Actions', 'micwag-simple-calendar' ) . "</th>";
 		echo "</tr>";
 		echo "</thead>";
@@ -229,12 +327,11 @@ final class MicwagSimpleCalendarAdmin {
 			echo $category['color'];
 			echo "</td>";
 			echo "<td>";
-			echo $category['icon'];
-			echo "</td>";
-			echo "<td>";
-			echo "<a href=\"admin.php?page=micwag-simple-calendar-category-edit.php&action=edit&id=" . $category['id']
+			echo "<a href=\"admin.php?page=micwag-simple-calendar-category-edit.php&action=edit&id="
+			     . $category['id']
 			     . "\" title=\"\"><span class=\"dashicons dashicons-edit\"></span></a>";
-			echo "<a href=\"admin.php?page=micwag-simple-calendar-category-edit.php&action=delete&id=" . $category['id']
+			echo "<a href=\"admin.php?page=micwag-simple-calendar-category-edit.php&action=delete&id="
+			     . $category['id']
 			     . "\" title=\"\"><span class=\"dashicons dashicons-trash\"></span></a>";
 			echo "</td>";
 			echo "</tr>";
@@ -245,7 +342,8 @@ final class MicwagSimpleCalendarAdmin {
 		$this->page_footer();
 	}
 
-	public function page_edit_category() {
+	public
+	function page_edit_category() {
 		if ( current_user_can( 'edit_pages' ) ) {
 			switch ( $_GET['action'] ) {
 				case "add" :
@@ -332,7 +430,8 @@ final class MicwagSimpleCalendarAdmin {
 		}
 	}
 
-	public function page_edit_date() {
+	public
+	function page_edit_date() {
 		if ( current_user_can( 'edit_pages' ) ) {
 			if ( ! isset( $_GET['action'] ) ) {
 				wp_safe_redirect( network_site_url( '/' )
@@ -365,14 +464,14 @@ final class MicwagSimpleCalendarAdmin {
 									'location'    => $_POST['date_location'],
 									'category'    => intval( $_POST['date_category'] )
 								);
-								if ( $calendar->add_date( $args ) ) {
+								if ( $calendar->add_appointment( $args ) ) {
 									// Added successful
-									header( 'location: ' . network_site_url( '/' )
-									        . 'wp-admin/admin.php?page=micwag-simple-calendar-dashboard.php&message=added' );
+									wp_safe_redirect( network_site_url( '/' )
+									                  . 'wp-admin/admin.php?page=micwag-simple-calendar-dashboard.php&message=added' );
 								} else {
 									// Error
-									header( 'location: ' . network_site_url( '/' )
-									        . 'wp-admin/admin.php?page=micwag-simple-calendar-dashboard.php&message=error' );
+									wp_safe_redirect( network_site_url( '/' )
+									                  . 'wp-admin/admin.php?page=micwag-simple-calendar-dashboard.php&message=error' );
 								}
 							} else {
 								// Wrong $_POST['edit_type']
@@ -392,7 +491,7 @@ final class MicwagSimpleCalendarAdmin {
 							if ( $_POST['edit_type'] == 'edit' ) {
 								//Save data
 								$calendar = new MicwagSimpleCalendar();
-								if ( ! is_null( $calendar->get_date( $_POST['date_id'] ) ) ) {
+								if ( ! is_null( $calendar->get_appointment( $_POST['date_id'] ) ) ) {
 									// Given date id date exists
 									if ( isset( $_POST['date_full_day'] ) ) {
 										$full_day = 1;
@@ -408,7 +507,7 @@ final class MicwagSimpleCalendarAdmin {
 										'location'    => $_POST['date_location'],
 										'category'    => intval( $_POST['date_category'] )
 									);
-									if ( ! ( $calendar->update_date( $_POST['date_id'], $args ) === false ) ) {
+									if ( ! ( $calendar->update_appointment( $_POST['date_id'], $args ) === false ) ) {
 										// Update successful
 										header( 'location: ' . network_site_url( '/' )
 										        . 'wp-admin/admin.php?page=micwag-simple-calendar-dashboard.php&message=updated' );
@@ -432,7 +531,7 @@ final class MicwagSimpleCalendarAdmin {
 							$id       = $_GET['id'];
 							$id       = mysql_real_escape_string( $id );
 							$calendar = new MicwagSimpleCalendar();
-							if ( $calendar->delete_date( $id ) ) {
+							if ( $calendar->delete_appointment( $id ) ) {
 								header( 'location: ' . network_site_url( '/' )
 								        . 'wp-admin/admin.php?page=micwag-simple-calendar-dashboard.php&message=deleted' );
 							}
@@ -451,7 +550,10 @@ final class MicwagSimpleCalendarAdmin {
 		}
 	}
 
-	private function print_form_category( $action = "edit", $id = null ) {
+	private
+	function print_form_category(
+		$action = "edit", $id = null
+	) {
 
 		if ( $action == "edit" ) {
 			$calendar = new MicwagSimpleCalendar();
@@ -503,10 +605,13 @@ final class MicwagSimpleCalendarAdmin {
 		echo "</form>";
 	}
 
-	private function print_form_date( $action = "edit", $id = null ) {
+	private
+	function print_form_date(
+		$action = "edit", $id = null
+	) {
 		$calendar = new MicwagSimpleCalendar();
 		if ( $action == "edit" ) {
-			$data = $calendar->get_date( $id );
+			$data = $calendar->get_appointment( $id );
 		}
 
 		echo "<form method=\"POST\">";

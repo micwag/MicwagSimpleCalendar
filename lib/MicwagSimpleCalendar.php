@@ -117,7 +117,7 @@ class MicwagSimpleCalendar {
      * @since 0.1
      * @param int limit: maximum number of dates in array
      */
-    public function get_all_dates($order = "beginning ASC") {
+    public function get_all_appointments($order = "beginning ASC") {
         global $wpdb;
 
         $sql = "SELECT id, beginning, end, full_day, title, description, location, category FROM ";
@@ -134,7 +134,7 @@ class MicwagSimpleCalendar {
      * @since 0.1
      * @param int limit: maximum number of dates in array
      */
-    public function get_future_dates($order = "beginning ASC", $limit=0) {
+    public function get_upcoming_appointments($order = "beginning ASC", $limit=0) {
         global $wpdb;
 
         $sql = "SELECT id, beginning, end, full_day, title, description, location, category FROM ";
@@ -154,7 +154,7 @@ class MicwagSimpleCalendar {
      * @since 0.1
      * @param int limit: maximum number of dates in array
      */
-    public function get_current_dates($order = "beginning ASC") {
+    public function get_current_appointments($order = "beginning ASC") {
         global $wpdb;
 
         $sql = "SELECT id, beginning, end, full_day, title, description, location, category FROM ";
@@ -171,7 +171,7 @@ class MicwagSimpleCalendar {
      * @since 0.1
      * @param int limit: maximum number of dates in array
      */
-    public function get_elapsed_dates($order = "beginning ASC") {
+    public function get_elapsed_appointments($order = "beginning DESC") {
         global $wpdb;
 
         $sql = "SELECT id, beginning, end, full_day, title, description, location, category FROM ";
@@ -190,7 +190,7 @@ class MicwagSimpleCalendar {
      * @param int date_id
      * @return array values
      */
-    public function get_date($date_id) {
+    public function get_appointment($date_id) {
         global $wpdb;
         $date_id = $wpdb -> _real_escape($date_id);
         $sql = "SELECT beginning, end, full_day, title, description, location, category FROM ";
@@ -214,7 +214,7 @@ class MicwagSimpleCalendar {
      * @since 0.1
      * @param Array $args
      */
-    public function add_date($args) {
+    public function add_appointment($args) {
         global $wpdb;
         $datetime_now = date('Y-m-d') . 'T' . date('H:m:i') . 'Z';
         $defaults = array(
@@ -238,7 +238,7 @@ class MicwagSimpleCalendar {
      * @param int date_id
      * @param array data
      */
-    public function update_date($date_id, $data) {
+    public function update_appointment($date_id, $data) {
         global $wpdb;
         $result = $wpdb -> update($this -> tableDatesName, $data, array('id' => $date_id));
         return $result;
@@ -252,7 +252,7 @@ class MicwagSimpleCalendar {
      * @param int id
      * @return bool true if suceeded
      */
-    public function delete_date($date_id) {
+    public function delete_appointment($date_id) {
         global $wpdb;
         $num_rows = $wpdb -> delete($this -> tableDatesName, array('id' => $date_id));
         if ($num_rows == 1) {

@@ -48,7 +48,7 @@ class MicwagSimpleCalendarWidgetList extends WP_Widget {
 			$category = 0;
 		}
 
-		$dates       = $this->calendar->get_future_dates( "beginning ASC", 5 );
+		$dates       = $this->calendar->get_upcoming_appointments( "beginning ASC", 5 );
 		$dates_final = array();
 
 		// Keep only dates from the selected category
