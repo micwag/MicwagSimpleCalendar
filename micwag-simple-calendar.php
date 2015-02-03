@@ -6,8 +6,7 @@
  * Author URI: http://micwag.de
  * Version: 0.1 dev
  *
- * The Plugin Micwag Simple Calendar creates a calender specialized for
- * Royal Rangers (c) groups. Dates can be organized in categories.
+ * The Plugin Micwag Simple Calendar creates a calender. Dates can be organized in categories.
  *
  * The plugin contains widgets for displaying the calendar as a list and table.
  * The management of dates should be done in wordpress backend.
