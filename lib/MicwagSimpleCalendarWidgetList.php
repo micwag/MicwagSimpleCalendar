@@ -85,6 +85,12 @@ class MicwagSimpleCalendarWidgetList extends WP_Widget {
 	 * @return string
 	 */
 	public function generate_html( $instance, $appointments ) {
+		if ( isset( $instance['dateFormat'] ) && ! is_null( $instance['dateFormat'] ) ) {
+			$dateFormat = $instance['dateFormat'];
+		} else {
+			$dateFormat = get_option( 'date_format' ) . ' H:i';
+		}
+
 		$appointmentsContent = "";
 		if ( isset( $instance['appointmentContent'] ) ) {
 			$appointmentMarkup = $instance['appointmentContent'];
@@ -121,7 +127,7 @@ class MicwagSimpleCalendarWidgetList extends WP_Widget {
 			$appointmentEndMinute       = isset( $appointmentEnd ) ? $appointmentEnd->minute : '';
 			$appointmentEndSecond       = isset( $appointmentEnd ) ? $appointmentEnd->second : '';
 
-			$beginningString = $appointmentBeginning->format( get_option( 'date_format' ) . ' H:i' );
+			$beginningString = $appointmentBeginning->format( $dateFormat );
 			$beginningString = str_replace( 'January', __( 'January' ), $beginningString );
 			$beginningString = str_replace( 'February', __( 'February' ), $beginningString );
 			$beginningString = str_replace( 'March', __( 'March' ), $beginningString );
@@ -133,7 +139,7 @@ class MicwagSimpleCalendarWidgetList extends WP_Widget {
 			$beginningString = str_replace( 'November', __( 'November' ), $beginningString );
 			$beginningString = str_replace( 'December', __( 'December' ), $beginningString );
 
-			$endString = $appointmentBeginning->format( get_option( 'date_format' ) . ' H:i' );
+			$endString = $appointmentBeginning->format( $dateFormat );
 			$endString = str_replace( 'January', __( 'January' ), $endString );
 			$endString = str_replace( 'February', __( 'February' ), $endString );
 			$endString = str_replace( 'March', __( 'March' ), $endString );
@@ -186,7 +192,6 @@ class MicwagSimpleCalendarWidgetList extends WP_Widget {
 	}
 
 	public function form( $instance ) {
-
 		// Title
 		if ( isset( $instance['title'] ) ) {
 			$title = $instance['title'];
@@ -195,7 +200,7 @@ class MicwagSimpleCalendarWidgetList extends WP_Widget {
 		}
 		echo '<p>';
 		echo '<label for="' . $this->get_field_id( 'title' );
-		echo '">' . __( 'Title', 'ranger-calendar' ) . '</label>';
+		echo '">' . __( 'Title', 'micwag-simple-calendar' ) . '</label>';
 
 		echo '<input class="widefat" type="text" id="' . $this->get_field_id( 'title' );
 		echo '" name="' . $this->get_field_name( 'title' );
@@ -233,6 +238,21 @@ class MicwagSimpleCalendarWidgetList extends WP_Widget {
 
 		echo '</select>';
 		echo '</p>';
+
+		// Date format
+		if ( isset( $instance['dateFormat'] ) ) {
+			$dateFormat = $instance['dateFormat'];
+		} else {
+			$dateFormat = get_option( 'date_format' ) . ' H:i';
+		}
+		echo '<p>';
+		echo '<label for="' . $this->get_field_id( 'dateFormat' );
+		echo '">' . __( 'Date format', 'ranger-calendar' ) . '</label>';
+
+		echo '<input class="widefat" type="text" id="' . $this->get_field_id( 'dateFormat' );
+		echo '" name="' . $this->get_field_name( 'dateFormat' );
+		echo '" value="' . esc_attr( $dateFormat ) . '" />';
+		echo "</p>";
 
 		// Widget Content
 		if ( isset( $instance['widgetContent'] ) ) {
@@ -282,6 +302,16 @@ class MicwagSimpleCalendarWidgetList extends WP_Widget {
 				$instance['category'] = $old_instance['category'];
 			} else {
 				$instance['category'] = '';
+			}
+		}
+
+		if ( isset( $new_instance['dateFormat'] ) ) {
+			$instance['dateFormat'] = $new_instance['dateFormat'];
+		} else {
+			if ( isset( $old_instance['dateFormat'] ) ) {
+				$instance['dateFormat'] = $old_instance['dateFormat'];
+			} else {
+				$instance['dateFormat'] = get_option( 'date_format' ) . ' H:i';
 			}
 		}
 
