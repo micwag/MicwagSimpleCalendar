@@ -166,10 +166,7 @@ final class MicwagSimpleCalendarAdmin {
 	 *
 	 * @return void
 	 */
-	private
-	function page_header(
-		$title = null
-	) {
+	private function page_header( $title = null ) {
 		echo "<div class=\"wrap\">";
 		if ( isset( $_GET['message'] ) ) {
 			switch ( $_GET['message'] ) {
@@ -210,13 +207,11 @@ final class MicwagSimpleCalendarAdmin {
 	 *
 	 * @return void
 	 */
-	private
-	function page_footer() {
+	private function page_footer() {
 		echo "</div>";
 	}
 
-	public
-	function page_dashboard() {
+	public function page_dashboard() {
 		if ( current_user_can( 'edit_pages', 'micwag-simple-calendar' ) ) {
 			require __DIR__ . '/../frontend/page-admin-dashboard.php';
 		} else {
@@ -224,8 +219,7 @@ final class MicwagSimpleCalendarAdmin {
 		}
 	}
 
-	public
-	function page_categories() {
+	public function page_categories() {
 		if ( current_user_can( 'edit_pages', 'micwag-simple-calendar' ) ) {
 			require __DIR__ . '/../frontend/page-admin-categories.php';
 		} else {
@@ -233,8 +227,7 @@ final class MicwagSimpleCalendarAdmin {
 		}
 	}
 
-	public
-	function page_edit_category() {
+	public function page_edit_category() {
 		if ( ! isset( $_GET['action'] ) ) {
 			die( 'Invalid request' );
 		}
@@ -245,8 +238,7 @@ final class MicwagSimpleCalendarAdmin {
 		}
 	}
 
-	public
-	function page_edit_date() {
+	public function page_edit_date() {
 		if ( current_user_can( 'edit_pages' ) ) {
 			require_once __DIR__ . '/../frontend/page-admin-appointments-edit.php';
 		} else {
@@ -254,10 +246,7 @@ final class MicwagSimpleCalendarAdmin {
 		}
 	}
 
-	private
-	function print_form_category(
-		$action = "edit", $id = null
-	) {
+	private function print_form_category( $action = "edit", $id = null ) {
 
 		if ( $action == "edit" ) {
 			$calendar = new MicwagSimpleCalendar();
@@ -315,10 +304,7 @@ final class MicwagSimpleCalendarAdmin {
 	 * @param string $action
 	 * @param null   $id
 	 */
-	private
-	function print_form_date(
-		$action = "add", $id = null
-	) {
+	private function print_form_date( $action = "add", $id = null ) {
 		$calendar = new MicwagSimpleCalendar();
 		if ( $action == "edit" ) {
 			$data = $calendar->get_appointment( $id );
